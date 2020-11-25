@@ -1,8 +1,8 @@
-# NextJS with AWS Amplify, Amazon Cognito, Material-UI
+# Next.js with AWS Amplify, Amazon Cognito, Material-UI
 
 [![amplifybutton](https://oneclick.amplifyapp.com/button.svg)](https://console.aws.amazon.com/amplify/home#/deploy?repo=https://github.com/moseley/cognito-material-ui)
 
-This example shows how to build a server rendered web application with NextJS and AWS Amplify with Amazon Cognito as the authenticator and Material-UI as the theme provider. We use AWS Amplify to generate code and to manage and consume the AWS cloud resources needed for our app. The NextJS app has dynamic and static routes to demonstrate how to load data on the server based on the incoming request.
+This example shows how to build a server rendered web application with Next.js, AWS Amplify, Amazon Cognito (authenticator) and Material-UI (theme provider). We use AWS Amplify to generate code and to manage and consume the AWS cloud resources needed for our app. The Next.js app has dynamic and static routes to demonstrate how to load data on the server based on the incoming request.
 
 Three routes are implemented :
 
@@ -125,7 +125,7 @@ yarn dev
 ### Edit GraphQL Schema
 
 1. Open `amplify/backend/api/myapp/schema.graphql` and change what you need to.
-2. Run `amplify push`
+2. Run `amplify push --y`
 3. 👍
 
 ### Use with new Amplify project
@@ -139,5 +139,5 @@ amplify init
 amplify add auth
 amplify add api
 rm ./schema.graphql
-amplify push
+amplify push --y
 ```
