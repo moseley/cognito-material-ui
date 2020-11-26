@@ -5,7 +5,6 @@ import { ThemeProvider } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Amplify from 'aws-amplify'
 import config from '../src/aws-exports'
-import '../styles/amplify.css'
 import theme from '../theme'
 
 Amplify.configure({

@@ -1,20 +1,29 @@
 import { createMuiTheme } from '@material-ui/core/styles'
-import { deepPurple, amber } from '@material-ui/core/colors'
+import { blue } from '@material-ui/core/colors'
 
 const theme = createMuiTheme({
   palette: {
-    primary: {
-      light: deepPurple[300],
-      main: deepPurple[500],
-      dark: deepPurple[700]
-    },
-    secondary: {
-      light: amber[300],
-      main: amber[500],
-      dark: amber[700],
-      contrastText: deepPurple[900]
-    },
-    type: 'dark'
+    primary: blue,
+    type: 'light'
+  },
+  typography: {
+    fontFamily: [
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(','),
+    fontSize: 14,
+    fontWeightLight: 300,
+    fontWeightRegular: 400,
+    fontWeightMedium: 500,
+    fontWeightBold: 700
   }
 })
 
