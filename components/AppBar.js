@@ -9,7 +9,6 @@ import IconButton from '@material-ui/core/IconButton'
 import Button from '@material-ui/core/Button'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
-import MenuIcon from '@material-ui/icons/Menu'
 import Drawer from '@material-ui/core/Drawer'
 import Hidden from '@material-ui/core/Hidden'
 import List from '@material-ui/core/List'
@@ -19,6 +18,8 @@ import ListItemText from '@material-ui/core/ListItemText'
 import Divider from '@material-ui/core/Divider'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import HomeIcon from '@material-ui/icons/Home'
+import MenuIcon from '@material-ui/icons/Menu'
+import Icon from '@material-ui/core/Icon'
 import Link from './Link'
 
 const drawerWidth = 240;
@@ -133,13 +134,13 @@ const AppBar = ({ siteName, window }) => {
               <List>
                 <ListItem button key="home">
                   <ListItemIcon>
-                    <HomeIcon color="primary" />
+                    <Icon className="fas fa-home" color="primary" />
                   </ListItemIcon>
                   <ListItemText primary="Home" />
                 </ListItem>
                 <ListItem button key="profile">
                   <ListItemIcon>
-                    <AccountCircle color="primary" />
+                    <Icon className="fas fa-user-circle" color="primary" />
                   </ListItemIcon>
                   <ListItemText primary="Profile" />
                 </ListItem>
@@ -161,7 +162,7 @@ const AppBar = ({ siteName, window }) => {
               onClick={handleMenu}
               color="inherit"
             >
-              <AccountCircle />
+              <Icon className="fas fa-user-circle" />
             </IconButton>
             <Menu
               id="menu-appbar"
