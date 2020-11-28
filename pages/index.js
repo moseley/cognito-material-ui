@@ -6,9 +6,10 @@ import CardActionArea from '@material-ui/core/CardActionArea'
 import CardHeader from '@material-ui/core/CardHeader'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
-import Link from '@material-ui/core/Link'
-import Layout from '../components/Layout'
-
+import MuiLink from '@material-ui/core/Link'
+import Link from 'components/Link'
+import Layout from 'components/Layout'
+import Hero from 'components/Hero'
 
 const useStyles = makeStyles((theme) => ({
   heroContent: {
@@ -26,6 +27,12 @@ const useStyles = makeStyles((theme) => ({
     '& :hover': {
       textDecoration: 'none'
     }
+  },
+  primaryColor: {
+    color: theme.palette.primary.main
+  },
+  secondaryColor: {
+    color: theme.palette.secondary.main
   }
 }))
 
@@ -34,7 +41,7 @@ const Index = () => {
   return (
     <Layout headTitle="Next.js Amazon Cognito w/ Material-UI">
       <>
-        <Container maxWidth="sm" component="main" className={classes.heroContent}>
+        <Hero>
           <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
             Welcome to <Link href="https://nextjs.org">Next.js!</Link>
           </Typography>
@@ -42,16 +49,16 @@ const Index = () => {
             Get started by editing{' '}
             <code className={classes.code}>pages/index.js</code>
           </Typography>
-        </Container>
+        </Hero>
         <Container maxWidth="md" component="main">
           <Grid container spacing={5} justify="center" alignItems="flex-start">
               <Grid item key="documentation" xs={12} sm={5}>
                 <Card variant="outlined" className={classes.card}>
                   <CardActionArea>
-                    <Link href="https://nextjs.org/docs" color="inherit">
-                      <CardHeader title="Documentation &rarr;"/>
+                    <Link href="/theme" color="inherit">
+                      <CardHeader title="Theme &rarr;"/>
                       <CardContent>
-                        <Typography>Find in-depth information about Next.js features and API.</Typography>
+                        <Typography>Update the <span className={classes.primaryColor}>primary</span> and <span className={classes.secondaryColor}>secondary</span> colors to customize your app.</Typography>
                       </CardContent>
                     </Link>
                   </CardActionArea>
@@ -60,36 +67,36 @@ const Index = () => {
               <Grid item key="learn" xs={12} sm={5}>
                 <Card variant="outlined" className={classes.card}>
                   <CardActionArea>
-                    <Link href="https://nextjs.org/learn" color="inherit">
+                    <MuiLink href="https://nextjs.org/learn" color="inherit">
                       <CardHeader title="Learn &rarr;" />
                       <CardContent>
                         <Typography>Learn about Next.js in an interactive course with quizzes!</Typography>
                       </CardContent>
-                    </Link>
+                    </MuiLink>
                   </CardActionArea>
                 </Card>
               </Grid>
               <Grid item key="examples" xs={12} sm={5}>
                 <Card variant="outlined" className={classes.card}>
                   <CardActionArea>
-                    <Link href="https://github.com/vercel/next.js/tree/master/examples" color="inherit">
+                    <MuiLink href="https://github.com/vercel/next.js/tree/master/examples" color="inherit">
                       <CardHeader title="Examples &rarr;" />
                       <CardContent>
                         <Typography>Discover and deploy boilerplate example Next.js projects.</Typography>
                       </CardContent>
-                    </Link>
+                    </MuiLink>
                   </CardActionArea>
                 </Card>
               </Grid>
               <Grid item key="deploy" xs={12} sm={5}>
                 <Card variant="outlined" className={classes.card}>
                   <CardActionArea>
-                    <Link href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app" color="inherit">
+                    <MuiLink href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app" color="inherit">
                       <CardHeader title="Deploy &rarr;" />
                       <CardContent>
                         <Typography>Instantly deploy your Next.js site to a public URL with Vercel.</Typography>
                       </CardContent>
-                    </Link>
+                    </MuiLink>
                   </CardActionArea>
                 </Card>
               </Grid>

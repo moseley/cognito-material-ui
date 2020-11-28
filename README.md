@@ -1,29 +1,31 @@
-# Next.js with AWS Amplify, Amazon Cognito, Material-UI
+# Bootstrap a Next.js app with AWS Amplify and Material-UI
 
 [![amplifybutton](https://oneclick.amplifyapp.com/button.svg)](https://console.aws.amazon.com/amplify/home#/deploy?repo=https://github.com/moseley/cognito-material-ui)
 
 This example shows how to build a server rendered web application with Next.js, AWS Amplify, Amazon Cognito (authenticator) and Material-UI (theme provider). We use AWS Amplify to generate code and to manage and consume the AWS cloud resources needed for our app. The Next.js app has dynamic and static routes to demonstrate how to load data on the server based on the incoming request.
 
-Three routes are implemented :
+Implemented routes:
 
-- `/profile` : An authenticated route (Code in [pages/profile.js](/pages/profile.js))
-- `/todo` : A static route that uses `getStaticProps` to load data from AppSync and renders it on the server (Code in [pages/todo/index.js](/pages/todo/index.js))
-- `/todo/[id]` : A dynamic route that uses `getServerSideProps` and the id from the provided context to load a single todo from AppSync and render it on the server. (Code in [pages/todo/:[id].js](/pages/todo/[id].js))
+- `/api/hello` : Basic Next.js example
+- `/api/posts` : Public API call
+- `/api/check-user` : Public API call (default authorization)
+- `/api/comments/:postId` : Private API call (custom authorization)
+- `/` : Next.js default page styled with Material-UI (Code in [pages/index.js](/pages/index.js))
+- `/theme` : Static generated page without data
+- `/posts` : Static generated page with client side public API call
+- `/profile` : An authenticated route
+- `/post/create` : Client side private API call
+- `/post/[id]` : A dynamic route that uses `getServerSideProps` and the id from the provided context to load a single post from AppSync and render it on the server. (Code in [pages/post/:[id].js](/pages/post/[id].js))
 
 ## How to use
 
 Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:
 
 ```bash
-npx create-next-app --example https://github.com/moseley/cognito-material-ui my-app
+npx create-next-app -e https://github.com/moseley/cognito-material-ui my-app
 # or
-yarn create next-app --example https://github.com/moseley/cognito-material-ui my-app
+yarn create next-app -e https://github.com/moseley/cognito-material-ui my-app
 ```
-
-### Initialize and deploy the Amplify project
-
-<details>
-  <summary>If you've never used amplify before </summary>
 
 #### Install & Configure Amplify
 
@@ -40,79 +42,108 @@ npm install -g @aws-amplify/cli
 amplify configure
 ```
 
-[Read More](https://aws-amplify.github.io/docs/cli-toolchain/quickstart?sdk=js)
-
-</details>
-
 #### Initialize Amplify
 
-```bash
+```sh
 $ amplify init
-
-# <Interactive>
 ? Enter a name for the project (my-app)
 ? Enter a name for the environment: dev
 ? Choose your default editor: <YOUR_EDITOR_OF_CHOICE>
 ? Choose the type of app that you're building (Use arrow keys)
-  android
-  ios
 ❯ javascript
 ? What javascript framework are you using: react
 ? Source Directory Path:  (src)
-? Distribution Directory Path: (build)
+? Distribution Directory Path: out
 ? Build Command:  (npm run-script build)
 ? Start Command: (npm run-script start)
 ? Do you want to use an AWS profile? Y
-
-# </Interactive>
 ```
 
-#### Add Cognito Auth
+#### Add Cognito Auth w/ Social Provider
 
 ```sh
 $ amplify add auth
-# <Interactive>
+? Do you want to use the default authentication and security configuration? (Use
+arrow keys)
+❯ Default configuration with Social Provider (Federation)
+How do you want users to be able to sign in? (Use arrow keys)
+❯ Username
+Do you want to configure advanced settings? (Use arrow keys)
+❯ No, I am done.
+What domain name prefix you want us to create for you? my-app
+Enter your redirect signin URI: http://localhost:3000/
+? Do you want to add another redirect signin URI: Yes
+Enter your redirect signin URI: https://your-domain-name.com
+? Do you want to add another redirect signin URI: No
+Enter your redirect signout URI: http://localhost:3000/
+? Do you want to add another redirect signout URI: Yes
+Enter your redirect signout URI: https://your-domain-name.com
+? Do you want to add another redirect signout URI: No
+Select the social providers you want to configure for your user pool: (Press <space> to select, <a> to toggle all, <i> to invert selection)
+◉ Facebook
+◉ Google
+◉ Login With Amazon
+You've opted to allow users to authenticate via Facebook.
+If you haven't already, you'll need to go to https://developers.facebook.com and create an App ID.
+? Enter your Facebook App ID for your OAuth flow: <FACEBOOK_APP_ID>
+? Enter your Facebook App Secret for your OAuth flow: <FACEBOOK_APP_SECRET>
+You've opted to allow users to authenticate via Google.
+If you haven't already, you'll need to go to https://developers.google.com/identity and create an App ID.
+Enter your Google Web Client ID for your OAuth flow:
+Enter your Google Web Client ID for your OAuth flow: <GOOGLE_CLIENT_ID>
+Enter your Google Web Client Secret for your OAuth flow: <GOOGLE_CLIENT_SECRET>
+You've opted to allow users to authenticate via Amazon.
+If you haven't already, you'll need to create an Amazon App ID.
+? Enter your Amazon App ID for your OAuth flow: <AMAZON_CLIENT_ID>
+? Enter your Amazon App Secret for your OAuth flow: <AMAZON_CLIENT_SECRET>
+```
+
+#### Add Cognito Auth w/out Social Provider
+
+```sh
+$ amplify add auth
 ? Do you want to use the default authentication and security configuration? Default configuration
 ? How do you want users to be able to sign in? Username
 ? Do you want to configure advanced settings? No, I am done.
-# </Interactive>
 ```
 
 #### Add the API
 
 ```sh
 $ amplify add api
-# <Interactive>
-? Please select from one of the below mentioned services (Use arrow keys)
-❯ GraphQL
-  REST
-? Provide API name: <API_NAME>
-? Choose an authorization type for the API (Use arrow keys)
-❯ API key
-  Amazon Cognito User Pool
-? Do you have an annotated GraphQL schema? (y/N) y
+? Please select from one of the below mentioned services: GraphQL
+? Provide API name: myapi
+? Choose the default authorization type for the API: API key
+? Enter a description for the API key: public
+? After how many days from now the API key should expire (1-365): 365
+? Do you want to configure advanced settings for the GraphQL API? Yes, I want to make some
+additional changes.
+? Configure additional auth types? Yes
+? Choose the additional authorization types you want to configure for the API: Amazon Cogni
+to User Pool
+? Configure conflict detection? No
+? Do you have an annotated GraphQL schema? Yes
 ? Provide your schema file path: ./schema.graphql
-# </Interactive>
 ```
 
 #### Deploy infrastructure
 
 ```sh
 $ amplify push --y
-# <Interactive>
 ? Are you sure you want to continue? Y
 ? Do you want to generate code for your newly created GraphQL API? Y
 ? Choose the code generation language target (Use arrow keys)
 ❯ javascript
-  typescript
-  flow
 ? Enter the file name pattern of graphql queries, mutations and subscriptions (src/graphql/**/*.js)
 ? Do you want to generate/update all possible GraphQL operations - queries, mutations and subscriptions (Y/n) Y
 ? Enter maximum statement depth [increase from default if your schema is deeply nested] (2)
-# </Interactive>
 ```
 
 ### Install & Run
+
+1. Open `schema.graphql` and change what you need to.
+2. Run `amplify push --y`
+3. 👍
 
 ```bash
 npm install
@@ -122,22 +153,11 @@ yarn
 yarn dev
 ```
 
-### Edit GraphQL Schema
+### Deploy Serverless Next Component
 
-1. Open `amplify/backend/api/myapp/schema.graphql` and change what you need to.
-2. Run `amplify push --y`
-3. 👍
-
-### Use with new Amplify project
-
-Make sure to commit your changes before doing this.
+Deploying with the Serverless Next Component will enable dynamic server-side rendered routes, see the [AWS Amplify Next.js Guide](https://docs.amplify.aws/guides/hosting/nextjs/q/platform/js) for more details.
 
 ```sh
-mv amplify/backend/api/myapp/schema.graphql ./schema.graphql
-rm -rf amplify/ src/
-amplify init
-amplify add auth
-amplify add api
-rm ./schema.graphql
-amplify push --y
+$ yarn deploy
+$ npx serverless
 ```

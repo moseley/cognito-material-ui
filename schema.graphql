@@ -1,15 +1,20 @@
-type Todo @model {
-  # ! means non-null GraphQL fields are allowed to be null by default
+type Post
+  @model
+  @auth(rules: [{ allow: owner, ownerField: "username" }, { allow: public, operations: [read] }]) {
   id: ID!
   name: String!
-  createdAt: String!
-  completed: Boolean!
-  todoList: TodoList! @connection(name: "SortedList")
-  userId: String!
+  content: String
+  comments: [Comment] @connection(keyName: "commentsByPostId", fields: ["id"])
+  username: String
+  createdAt: AWSDateTime
 }
 
-type TodoList @model {
+type Comment
+  @model
+  @key(name: "commentsByPostId", fields: ["postId"], queryField: "commentsByPostId")
+  @auth(rules: [{ allow: owner, ownerField: "username" }, { allow: public, operations: [read] }]) {
   id: ID!
-  createdAt: String!
-  todos: [Todo] @connection(name: "SortedList", sortField: "createdAt")
+  postId: ID!
+  message: String!
+  username: String
 }

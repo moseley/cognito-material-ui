@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { Auth } from 'aws-amplify'
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, withStyles } from '@material-ui/core/styles'
 import MuiAppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
@@ -16,13 +16,22 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import Divider from '@material-ui/core/Divider'
-import AccountCircle from '@material-ui/icons/AccountCircle'
-import HomeIcon from '@material-ui/icons/Home'
-import MenuIcon from '@material-ui/icons/Menu'
 import Icon from '@material-ui/core/Icon'
+import MuiLink from '@material-ui/core/Link'
 import Link from './Link'
+import checkUser from 'helpers/checkUser'
 
 const drawerWidth = 240;
+
+const FacebookButton = withStyles(() => ({
+  root: {
+    color: '#ffffff',
+    backgroundColor: '#3b5998',
+    '&:hover': {
+      backgroundColor: '#adb9d3',
+    },
+  },
+}))(Button);
 
 const useStyles = makeStyles((theme) => ({
   menuButton: {
@@ -91,7 +100,7 @@ const useStyles = makeStyles((theme) => ({
 
 const AppBar = ({ siteName, window }) => {
   const classes = useStyles()
-  const [user, setUser] = useState(null)
+  const user = checkUser()
   const [mobileOpen, setMobileOpen] = useState(false)
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
@@ -104,20 +113,15 @@ const AppBar = ({ siteName, window }) => {
   const handleClose = () => {
     setAnchorEl(null)
   }
-  useEffect(() => {
-    Auth.currentAuthenticatedUser()
-      .then(user => setUser(user))
-      .catch(err => setUser(null))
-  }, [])
   const container = window !== undefined ? () => window().document.body : undefined
   return (
     <MuiAppBar position="fixed" color="primary" elevation={0} className={classes.appBar}>
       <Toolbar>
         <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="open drawer" onClick={handleDrawerToggle}>
-          <MenuIcon />
+          <Icon className="fas fa-bars" />
         </IconButton>
         <Typography variant="h6" color="inherit" className={classes.title} noWrap>
-          {siteName ? siteName : ''}
+          {siteName ? <Link href="/" color="inherit">{siteName}</Link> : ''}
         </Typography>
         <nav>
           <Hidden smUp implementation="css">
@@ -132,62 +136,126 @@ const AppBar = ({ siteName, window }) => {
               <div className={classes.toolbar} />
               <Divider />
               <List>
-                <ListItem button key="home">
-                  <ListItemIcon>
-                    <Icon className="fas fa-home" color="primary" />
-                  </ListItemIcon>
-                  <ListItemText primary="Home" />
-                </ListItem>
-                <ListItem button key="profile">
-                  <ListItemIcon>
-                    <Icon className="fas fa-user-circle" color="primary" />
-                  </ListItemIcon>
-                  <ListItemText primary="Profile" />
-                </ListItem>
+                <>
+                  <ListItem button key="home" component={Link} href="/">
+                    <>
+                      <ListItemIcon>
+                        <Icon className="fas fa-home" color="primary" />
+                      </ListItemIcon>
+                      <ListItemText primary="Home" />
+                    </>
+                  </ListItem>
+                  <ListItem button key="posts" component={Link} href="/posts">
+                    <>
+                      <ListItemIcon>
+                        <Icon className="fas fa-file-alt" color="primary" />
+                      </ListItemIcon>
+                      <ListItemText primary="Posts" />
+                    </>
+                  </ListItem>
+                  {user ? (
+                    <>
+                      <ListItem button key="profile" component={Link} href="/profile">
+                        <>
+                          <ListItemIcon>
+                            <Icon className="fas fa-user-circle" color="primary" />
+                          </ListItemIcon>
+                          <ListItemText primary="Profile" />
+                        </>
+                      </ListItem>
+                      <ListItem button key="protected" component={Link} href="/protected">
+                        <>
+                        <ListItemIcon>
+                          <Icon className="fas fa-lock" color="primary" />
+                        </ListItemIcon>
+                        <ListItemText primary="Protected" />
+                        </>
+                      </ListItem>
+                      <ListItem button key="protected-client" component={Link} href="/protected-client">
+                        <>
+                        <ListItemIcon>
+                          <Icon className="fas fa-user-lock" color="primary" />
+                        </ListItemIcon>
+                        <ListItemText primary="Protected Client" />
+                        </>
+                      </ListItem>
+                      <ListItem button key="create-post" component={Link} href="/post/create">
+                        <>
+                        <ListItemIcon>
+                          <Icon className="fas fa-plus-circle" color="primary" />
+                        </ListItemIcon>
+                        <ListItemText primary="Create Post" />
+                        </>
+                      </ListItem>
+                      <ListItem button key="logout" onClick={() => Auth.signOut()}>
+                        <ListItemIcon>
+                          <Icon className="fas fa-door-open" color="primary" />
+                        </ListItemIcon>
+                        <ListItemText primary="Logout" />
+                      </ListItem>
+                    </>
+                  ) : (
+                    <ListItem button key="profile" component={Link} href="/profile">
+                      <>
+                        <ListItemIcon>
+                          <Icon className="fas fa-user-lock" color="primary" />
+                        </ListItemIcon>
+                        <ListItemText primary="Login" />
+                        </>
+                      </ListItem>
+                  )}
+                </>
               </List>
             </Drawer>
           </Hidden>
           <Hidden xsDown implementation="css">
-            <Link variant="button" color="textPrimary" href="/" className={classes.link}>
-              Home
-            </Link>
+            <>
+              <Link variant="button" color="textPrimary" href="/posts" className={classes.link}>Posts</Link>
+              {user ? (
+                <>
+                  <Link variant="button" color="textPrimary" href="/protected" className={classes.link}>Protected</Link>
+                  <Link variant="button" color="textPrimary" href="/protected-client" className={classes.link}>Protected Client</Link>
+                  <Link variant="button" color="textPrimary" href="/post/create" className={classes.link}>Create Post</Link>
+                  <IconButton
+                    aria-label="account of current user"
+                    aria-controls="menu-appbar"
+                    aria-haspopup="true"
+                    onClick={handleMenu}
+                    color="inherit"
+                  >
+                    <Icon className="fas fa-user-circle" />
+                  </IconButton>
+                  <Menu
+                    id="menu-appbar"
+                    anchorEl={anchorEl}
+                    anchorOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    open={open}
+                    onClose={handleClose}
+                  >
+                    <MenuItem onClick={handleClose}><Link href="/profile">Profile</Link></MenuItem>
+                    <MenuItem onClick={() => Auth.signOut()}><MuiLink>Logout</MuiLink></MenuItem>
+                  </Menu>
+                </>
+              ) : (
+                <>
+                  <Button href="/profile" color="default" variant="outlined" className={classes.button}>Login</Button>
+                  {/* <Button variant="outlined" className={classes.button} onClick={() => Auth.federatedSignIn({provider: 'Facebook'})}>Facebook</Button>
+                  <Button variant="outlined" className={classes.button} onClick={() => Auth.federatedSignIn({provider: 'Google'})}>Google</Button>
+                  <Button variant="outlined" className={classes.button} onClick={() => Auth.federatedSignIn({provider: 'Amazon'})}>Amazon</Button>
+                  <Button variant="outlined" className={classes.button} onClick={() => Auth.federatedSignIn()}>Hosted UI</Button> */}
+                </>
+              )}
+            </>
           </Hidden>
         </nav>
-        {user ? (
-          <div>
-            <IconButton
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleMenu}
-              color="inherit"
-            >
-              <Icon className="fas fa-user-circle" />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorEl}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={open}
-              onClose={handleClose}
-            >
-              <MenuItem onClick={handleClose}><Link href='/profile'>Profile</Link></MenuItem>
-              <MenuItem onClick={handleClose}><Link href='/logout'>Logout</Link></MenuItem>
-            </Menu>
-          </div>
-        ) : (
-          <Button href="/profile" color="default" variant="outlined" className={classes.button}>
-            Login
-          </Button>
-        )}
       </Toolbar>
     </MuiAppBar>
   )

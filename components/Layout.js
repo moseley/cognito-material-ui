@@ -9,6 +9,14 @@ import AppBar from './AppBar'
 
 const useStyles = makeStyles((theme) => ({
   '@global': {
+    code: {
+      background: 
+        theme.palette.type === 'light' ? theme.palette.grey[100] : theme.palette.grey[800],
+      borderRadius: '5px',
+      padding: '0.75rem',
+      fontSize: '1.1rem',
+      fontFamily: 'Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace'
+    },
     ':root': {
       '--amplify-font-family': theme.typography.fontFamily,
       // '--amplify-text-xxs': theme.typography.caption.fontSize,
@@ -65,12 +73,14 @@ const Layout = ({title, headTitle, children}) => {
       <div className={classes.offset} />
       <Container>
         <Box my={4}>
-          {title && (
-            <Typography variant="h4" component="h1" gutterBottom>
-              {title}
-            </Typography>
-          )}
-          {children}
+          <>
+            {title && (
+              <Typography component="h1" variant="h2" align="left" color="textPrimary" gutterBottom>
+                {title}
+              </Typography>
+            )}
+            {children}
+          </>
         </Box>
       </Container>
       <Container maxWidth="md" component="footer" className={classes.footer}>
