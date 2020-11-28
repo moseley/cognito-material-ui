@@ -21,7 +21,7 @@ Implemented routes:
 
 Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:
 
-```bash
+```
 npx create-next-app -e https://github.com/moseley/cognito-material-ui my-app
 # or
 yarn create next-app -e https://github.com/moseley/cognito-material-ui my-app
@@ -32,19 +32,19 @@ yarn create next-app -e https://github.com/moseley/cognito-material-ui my-app
 1. [Sign up](https://portal.aws.amazon.com/billing/signup#/start) for an AWS account
 2. Install the AWS Amplify cli:
 
-```sh
+```
 npm install -g @aws-amplify/cli
 ```
 
 3. Configure the Amplify cli
 
-```sh
+```
 amplify configure
 ```
 
 #### Initialize Amplify
 
-```sh
+```
 $ amplify init
 ? Enter a name for the project (my-app)
 ? Enter a name for the environment: dev
@@ -61,7 +61,7 @@ $ amplify init
 
 #### Add Cognito Auth w/ Social Provider
 
-```sh
+```
 $ amplify add auth
 ? Do you want to use the default authentication and security configuration? (Use
 arrow keys)
@@ -100,7 +100,7 @@ If you haven't already, you'll need to create an Amazon App ID.
 
 #### Add Cognito Auth w/out Social Provider
 
-```sh
+```
 $ amplify add auth
 ? Do you want to use the default authentication and security configuration? Default configuration
 ? How do you want users to be able to sign in? Username
@@ -109,7 +109,7 @@ $ amplify add auth
 
 #### Add the API
 
-```sh
+```
 $ amplify add api
 ? Please select from one of the below mentioned services: GraphQL
 ? Provide API name: myapi
@@ -128,7 +128,7 @@ to User Pool
 
 #### Deploy infrastructure
 
-```sh
+```
 $ amplify push --y
 ? Are you sure you want to continue? Y
 ? Do you want to generate code for your newly created GraphQL API? Y
@@ -145,7 +145,7 @@ $ amplify push --y
 2. Run `amplify push --y`
 3. 👍
 
-```bash
+```
 npm install
 npm run dev
 # or
@@ -157,7 +157,7 @@ yarn dev
 
 Deploying with the Serverless Next Component will enable dynamic server-side rendered routes, see the [AWS Amplify Next.js Guide](https://docs.amplify.aws/guides/hosting/nextjs/q/platform/js) for more details.
 
-```sh
+```
 $ yarn deploy
 $ npx serverless
 ```

@@ -55,6 +55,7 @@ const MyApp = ({ Component, pageProps }) => {
     <>
       <Head>
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
+        <meta name="description" content="Next.js app bootstrapped with AWS Amplify + MUI" />
       </Head>
       <ThemeProvider theme={theme}>
         <CssBaseline />

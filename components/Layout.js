@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import Image from 'next/image'
 import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
@@ -92,7 +93,7 @@ const Layout = ({title, headTitle, children}) => {
             </Link>{' '}
             {new Date().getFullYear()}
             {'. Powered by '}
-            <img src="/vercel.svg" className={classes.logo} />
+            <Image src="/vercel.svg" className={classes.logo} alt="Vercel" height={14} width={62} />
           </Typography>
         </Box>
       </Container>
