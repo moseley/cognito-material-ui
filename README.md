@@ -1,44 +1,65 @@
-# Bootstrap a Next.js app with AWS Amplify and Material-UI
+This project is used to bootstrap a [Next.js](https://nextjs.org/) app with [AWS Amplify](https://docs.amplify.aws/) features ready to go.
 
-[![amplifybutton](https://oneclick.amplifyapp.com/button.svg)](https://console.aws.amazon.com/amplify/home#/deploy?repo=https://github.com/moseley/cognito-material-ui)
+### Current Integrations
 
-This example shows how to build a server rendered web application with Next.js, AWS Amplify, Amazon Cognito (authenticator) and Material-UI (theme provider). We use AWS Amplify to generate code and to manage and consume the AWS cloud resources needed for our app. The Next.js app has dynamic and static routes to demonstrate how to load data on the server based on the incoming request.
+* Cognito
+* API Gateway (GraphQL)
+* Matarial-UI
+* Serverless
 
-Implemented routes:
+### Getting Started
 
-- `/api/hello` : Basic Next.js example
-- `/api/posts` : Public API call
-- `/api/check-user` : Public API call (default authorization)
-- `/api/comments/:postId` : Private API call (custom authorization)
+```bash
+yarn create next-app -e https://github.com/moseley/cognito-material-ui my-app
+cd ./my-app
+yarn
+yarn dev
+```
+
+
+<details>
+  <summary>Using npm?</summary>
+  
+  ```bash
+  npx create-next-app -e https://github.com/moseley/cognito-material-ui my-app
+  cd ./my-app
+  npm i
+  npm run dev
+  ```
+</details>
+
+### Client Routes
+
+Both statically generated and server-side rendered () routes are implemented client-side. 
+
 - `/` : Next.js default page styled with Material-UI (Code in [pages/index.js](/pages/index.js))
-- `/theme` : Static generated page without data
+- `/theme` : Statically generated page without data
 - `/posts` : Static generated page with client side public API call
 - `/profile` : An authenticated route
 - `/post/create` : Client side private API call
 - `/post/[id]` : A dynamic route that uses `getServerSideProps` and the id from the provided context to load a single post from AppSync and render it on the server. (Code in [pages/post/:[id].js](/pages/post/[id].js))
 
-## How to use
+### API Routes
 
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:
-
-```
-npx create-next-app -e https://github.com/moseley/cognito-material-ui my-app
-# or
-yarn create next-app -e https://github.com/moseley/cognito-material-ui my-app
-```
+- `/api/hello` : Basic Next.js example
+- `/api/posts` : Public API call
+- `/api/check-user` : Public API call (default authorization)
+- `/api/comments/:postId` : Private API call (custom authorization)
 
 #### Install & Configure Amplify
 
 1. [Sign up](https://portal.aws.amazon.com/billing/signup#/start) for an AWS account
 2. Install the AWS Amplify cli:
 
-```
+```bash
+yarn global add @aws-amplify/cli
+#or
 npm install -g @aws-amplify/cli
 ```
 
 3. Configure the Amplify cli
 
-```
+```bash
 amplify configure
 ```
 
@@ -109,6 +130,8 @@ $ amplify add auth
 
 #### Add the API
 
+Open `schema.graphql` and change what you need to.
+
 ```
 $ amplify add api
 ? Please select from one of the below mentioned services: GraphQL
@@ -139,20 +162,6 @@ $ amplify push --y
 ? Enter maximum statement depth [increase from default if your schema is deeply nested] (2)
 ```
 
-### Install & Run
-
-1. Open `schema.graphql` and change what you need to.
-2. Run `amplify push --y`
-3. 👍
-
-```
-npm install
-npm run dev
-# or
-yarn
-yarn dev
-```
-
 ### Deploy Serverless Next Component
 
 Deploying with the Serverless Next Component will enable dynamic server-side rendered routes, see the [AWS Amplify Next.js Guide](https://docs.amplify.aws/guides/hosting/nextjs/q/platform/js) for more details.
@@ -161,3 +170,5 @@ Deploying with the Serverless Next Component will enable dynamic server-side ren
 $ yarn deploy
 $ npx serverless
 ```
+
+[![amplifybutton](https://oneclick.amplifyapp.com/button.svg)](https://console.aws.amazon.com/amplify/home#/deploy?repo=https://github.com/moseley/cognito-material-ui)
