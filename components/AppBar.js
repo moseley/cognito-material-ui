@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { Auth } from 'aws-amplify'
-import { makeStyles, withStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import MuiAppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
@@ -19,19 +19,10 @@ import Divider from '@material-ui/core/Divider'
 import Icon from '@material-ui/core/Icon'
 import MuiLink from '@material-ui/core/Link'
 import Link from './Link'
-import checkUser from 'helpers/checkUser'
+import SignIn from './SignIn'
+import useUser from 'hooks/useUser'
 
 const drawerWidth = 240;
-
-const FacebookButton = withStyles(() => ({
-  root: {
-    color: '#ffffff',
-    backgroundColor: '#3b5998',
-    '&:hover': {
-      backgroundColor: '#adb9d3',
-    },
-  },
-}))(Button);
 
 const useStyles = makeStyles((theme) => ({
   menuButton: {
@@ -100,7 +91,7 @@ const useStyles = makeStyles((theme) => ({
 
 const AppBar = ({ siteName, window }) => {
   const classes = useStyles()
-  const user = checkUser()
+  const { loading, user } = useUser()
   const [mobileOpen, setMobileOpen] = useState(false)
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
@@ -153,7 +144,7 @@ const AppBar = ({ siteName, window }) => {
                       <ListItemText primary="Posts" />
                     </>
                   </ListItem>
-                  {user ? (
+                  {!loading && user ? (
                     <>
                       <ListItem button key="profile" component={Link} href="/profile">
                         <>
@@ -211,7 +202,7 @@ const AppBar = ({ siteName, window }) => {
           <Hidden xsDown implementation="css">
             <>
               <Link variant="button" color="textPrimary" href="/posts" className={classes.link}>Posts</Link>
-              {user ? (
+              {!loading && user ? (
                 <>
                   <Link variant="button" color="textPrimary" href="/protected" className={classes.link}>Protected</Link>
                   <Link variant="button" color="textPrimary" href="/protected-client" className={classes.link}>Protected Client</Link>
@@ -246,8 +237,9 @@ const AppBar = ({ siteName, window }) => {
                 </>
               ) : (
                 <>
-                  <Button href="/profile" color="default" variant="outlined" className={classes.button}>Login</Button>
-                  {/* <Button variant="outlined" className={classes.button} onClick={() => Auth.federatedSignIn({provider: 'Facebook'})}>Facebook</Button>
+                  <SignIn />
+                  {/* <Button href="/profile" color="default" variant="outlined" className={classes.button}>Login</Button>
+                  <Button variant="outlined" className={classes.button} onClick={() => Auth.federatedSignIn({provider: 'Facebook'})}>Facebook</Button>
                   <Button variant="outlined" className={classes.button} onClick={() => Auth.federatedSignIn({provider: 'Google'})}>Google</Button>
                   <Button variant="outlined" className={classes.button} onClick={() => Auth.federatedSignIn({provider: 'Amazon'})}>Amazon</Button>
                   <Button variant="outlined" className={classes.button} onClick={() => Auth.federatedSignIn()}>Hosted UI</Button> */}

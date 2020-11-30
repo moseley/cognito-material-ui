@@ -1,12 +1,12 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 import Box from '@material-ui/core/Box'
-import Link from '@material-ui/core/Link'
-import Typography from '@material-ui/core/Typography'
+import { H2 } from 'mui/Typography'
+import { XS, SM, MD, LG, XL } from 'mui/Container'
 import AppBar from './AppBar'
+import Footer from './Footer'
 
 const useStyles = makeStyles((theme) => ({
   '@global': {
@@ -19,6 +19,8 @@ const useStyles = makeStyles((theme) => ({
       fontFamily: 'Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace'
     },
     ':root': {
+      '--amplify-background-color': theme.palette.background.default,
+      '--amplify-border-radius': `${theme.shape.borderRadius}px`,
       '--amplify-font-family': theme.typography.fontFamily,
       // '--amplify-text-xxs': theme.typography.caption.fontSize,
       // '--amplify-text-xs': theme.typography.body2.fontSize,
@@ -46,28 +48,14 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   offset: theme.mixins.toolbar,
-  logo: {
-    height: '.9em'
-  },
-  footer: {
-    borderTop: `1px solid ${theme.palette.divider}`,
-    marginTop: theme.spacing(8),
-    paddingTop: theme.spacing(3),
-    paddingBottom: theme.spacing(3),
-    [theme.breakpoints.up('sm')]: {
-      paddingTop: theme.spacing(1),
-      paddingBottom: theme.spacing(4),
-    },
-  },
-}))
+})) 
 
-const Layout = ({title, headTitle, children}) => {
+const Layout = ({ children }) => {
   const classes = useStyles()
   const siteName = 'Next.js Project'
   return (
     <>
       <Head>
-        <title>{headTitle ? headTitle : `${title} | ${siteName}`}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <AppBar siteName={siteName} />
@@ -75,35 +63,28 @@ const Layout = ({title, headTitle, children}) => {
       <Container>
         <Box my={4}>
           <>
-            {title && (
-              <Typography component="h1" variant="h2" align="left" color="textPrimary" gutterBottom>
-                {title}
-              </Typography>
-            )}
             {children}
           </>
         </Box>
       </Container>
-      <Container maxWidth="md" component="footer" className={classes.footer}>
-        <Box mt={5}>
-          <Typography variant="body2" color="textSecondary" align="center">
-            {'Copyright © '}
-            <Link color="inherit" href="https://github.com/moseley/cognito-material-ui">
-              Your Website
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'. Powered by '}
-            <Image src="/vercel.svg" className={classes.logo} alt="Vercel" height={14} width={62} />
-          </Typography>
-        </Box>
-      </Container>
+      <Footer />
     </>
   )
 }
 
+export const Title = ({ children, ...others }) => (
+  <H2 component="h1" color="textPrimary" gutterBottom {...others}>
+    {children}
+  </H2>
+)
+
+export const XSLayout = ({ children }) => <Layout><XS>{children}</XS></Layout>
+export const SMLayout = ({ children }) => <Layout><SM>{children}</SM></Layout>
+export const MDLayout = ({ children }) => <Layout><MD>{children}</MD></Layout>
+export const LGLayout = ({ children }) => <Layout><LG>{children}</LG></Layout>
+export const XLLayout = ({ children }) => <Layout><XL>{children}</XL></Layout>
+
 Layout.propTypes = {
-  title: PropTypes.string,
-  headTitle: PropTypes.string,
   children: PropTypes.element
 }
 

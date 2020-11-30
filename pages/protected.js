@@ -1,18 +1,18 @@
 import { withSSRContext } from 'aws-amplify'
-import Typography from '@material-ui/core/Typography'
 import Layout from 'components/Layout'
+import { P } from 'mui/Typography'
 
 const Protected = ({ authenticated, username }) => {
   if (!authenticated) {
     return (
       <Layout title="Sorry">
-        <Typography>Not authenticated</Typography>
+        <P>Not authenticated</P>
       </Layout>
     )
   }
   return (
     <Layout title="Protected">
-      <Typography>Hello {username} from SSR route!</Typography>
+      <P>Hello {username} from SSR route!</P>
     </Layout>
   )
 }

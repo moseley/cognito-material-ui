@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { Auth, Hub } from 'aws-amplify'
 
-const checkUser = () => {
+const useUser = () => {
+  const [loading, setLoading] = useState(true)
   const [user, setUser] = useState(null)
   const [custom, setCustom] = useState(null)
   useEffect(() => {
@@ -9,7 +10,10 @@ const checkUser = () => {
       try {
         const signedInUser = await Auth.currentAuthenticatedUser()
         setUser(signedInUser)
-      } catch (err) { setUser(null) }
+      } catch (err) { 
+        setUser(null)
+      }
+      setLoading(false)
     }
     checkAuth()
     const unsubscribe = Hub.listen('auth', ({ payload: {event, data} }) => {
@@ -19,6 +23,7 @@ const checkUser = () => {
           break
         case 'signOut':
           setUser(null)
+          setCustom(null)
           break
         case 'customOAuthState':
           setCustom(data)
@@ -30,7 +35,7 @@ const checkUser = () => {
     return () => unsubscribe()
   }, [])
 
-  return user
+  return { loading, user, custom }
 }
 
-export default checkUser
+export default useUser

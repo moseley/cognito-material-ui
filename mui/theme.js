@@ -25,6 +25,9 @@ const theme = createMuiTheme({
     fontWeightRegular: 400,
     fontWeightMedium: 500,
     fontWeightBold: 700
+  },
+  shape: {
+    borderRadius: 4
   }
 })
 

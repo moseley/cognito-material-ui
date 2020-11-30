@@ -7,11 +7,11 @@ import Card from '@material-ui/core/Card'
 import CardActionArea from '@material-ui/core/CardActionArea'
 import CardHeader from '@material-ui/core/CardHeader'
 import CardContent from '@material-ui/core/CardContent'
-import Typography from '@material-ui/core/Typography'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import Link from 'components/Link'
 import Layout from 'components/Layout'
 import { listPosts } from 'src/graphql/queries'
+import { P } from 'mui/Typography'
 
 const useStyles = makeStyles((theme) => ({
   heroContent: {
@@ -58,7 +58,7 @@ const Posts = () => {
                     <Link href={`/post/[id]`} as={`/post/${post.id}`} color="inherit">
                       <CardHeader title={post.name} />
                       <CardContent>
-                        <Typography>{`${post.content.substring(0, 80)}`}&hellip;</Typography>
+                        <P>{`${post.content.substring(0, 80)}`}&hellip;</P>
                       </CardContent>
                     </Link>
                   </CardActionArea>
